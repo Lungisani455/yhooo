@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Full Swag Registration</title>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      height: 80px;
+      width: 100%;
+      background-color: #333;
+      z-index: 100;
+      padding: 0 20px;
+    }
+
+    .nav {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav_logo {
+      font-size: 25px;
+      color: #fff;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav_logo span {
+      color: skyblue;
+      font-style: italic;
+      font-size: 30px;
+    }
+
+    .nav_items {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav_link {
+      color: #fff;
+      font-size: 18px;
+      transition: color 0.3s;
+    }
+
+    .nav_link:hover {
+      color: skyblue;
+    }
+
+    .button {
+      padding: 8px 16px;
+      border: 2px solid #fff;
+      background-color: transparent;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .button:hover {
+      background-color: #fff;
+      color: #333;
+      transform: scale(1.05);
+    }
+
+    .button:active {
+      transform: scale(0.98);
+    }
+
+    /* Home Section */
+    .home {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: url("b10.jpg") no-repeat center center/cover;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+
+    .home::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+
+    .home .content {
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .home h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .home h1 span {
+      color: skyblue;
+      font-style: italic;
+    }
+
+    .home p {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .home .btn-container {
+      margin-top: 20px;
+    }
+
+    .home .button {
+      margin: 0 10px;
+    }
+
+    /* Form Styles */
+    .form-container {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      z-index: 1000;
+      width: 350px;
+    }
+
+    .form-title {
+      margin-bottom: 20px;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .show-password {
+      cursor: pointer;
+      font-size: 16px;
+      color: #333;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .form-button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: deepskyblue;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .form-button:hover {
+      background-color: skyblue;
+    }
+
+    .close-button {
+      background-color: transparent;
+      color: black;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      text-align: right;
+      display: block;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-top: -10px;
+      margin-bottom: 10px;
+    }
+
+
+
+
+
+
+
+
+
+
+    .captcha-container {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      z-index: 1000;
+      width: 450px;
+      text-align: center;
+    }
+
+    .captcha-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .captcha-image {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .captcha-button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: deepskyblue;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    .captcha-button:hover {
+      background-color: skyblue;
+    }
+
+
+
+    .captcha-image:hover {
+    border: 2px solid deepskyblue; /* Highlight image on hover */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    .captcha-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.captcha-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.image-border {
+    border: 2px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns */
+    gap: 10px; /* Space between images */
+}
+
+.captcha-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.captcha-image.selected {
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Add shadow when selected */
+    border: 2px solid #007BFF; /* Highlight selected images with border */
+}
+
+.captcha-button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.captcha-button:hover {
+    background-color: #0056b3;
+    
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .home h1 {
+        font-size: 32px;
+      }
+
+      .home p {
+        font-size: 18px;
+      }
+
+      .nav_logo {
+        font-size: 20px;
+      }
+
+      .form-container {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <header class="header">
+      <nav class="nav">
+        <a href="#" class="nav_logo">Full <span>Swag</span></a>
+        <ul class="nav_items">
+          <li><a href="clothing/index.html" class="nav_link">Home</a></li>
+        </ul>
+        <button class="button" id="login-button">Login</button>
+      </nav>
+    </header>
+
+    <section class="home">
+      <div class="content">
+        <h1>Welcome to Full <span>Swag</span></h1>
+        <p>Get the best clothing, footwear, and accessories for men, women, and kids. Discover your style today!</p>
+        <div class="btn-container">
+          <button class="button" id="signup-button">Sign Up</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="form-container" id="login-form-container">
+    <img src="clothing/images/closebutton.png" alt="Close" id="login-close-button" class="close-button" />    <div class="form-title">Login</div>
+    <input type="text" class="form-input" id="login-username" placeholder="Username" required />
+    <span class="error" id="login-username-error"></span>
+    <div style="position: relative;">
+      <input type="password" class="form-input" id="login-password" placeholder="Password" required />
+      <span class="show-password" onclick="togglePassword('login-password')">&#128065;</span>
+    </div>
+    <span class="error" id="login-password-error"></span>
+ <!-- Checkbox for human verification -->
+ <div>
+  <input type="checkbox" id="human-verification-checkbox" />
+  <label for="human-verification-checkbox">Verify I am human</label>
+</div>
+
+<button class="form-button" id="login-submit-button" disabled>Submit</button>
+</div>
+
+<script>
+  // Event listener for the Submit button
+  document.getElementById('login-submit-button').addEventListener('click', function() {
+    // Redirect to clothing/index page
+    window.location.href = 'clothing/index.html';
+  });
+
+  // Enable the Submit button only if the human verification checkbox is checked
+  document.getElementById('human-verification-checkbox').addEventListener('change', function() {
+    document.getElementById('login-submit-button').disabled = !this.checked;
+  });
+</script>
+
+
+
+
+  <div class="form-container" id="login-form-container">
+    <img src="clothing/images/closebutton.png" alt="Close" id="login-close-button" class="close-button" />
+    <div class="form-title">Login</div>
+    <input type="text" class="form-input" id="login-username" placeholder="Username" required />
+    <span class="error" id="login-username-error"></span>
+    <div style="position: relative;">
+      <input type="password" class="form-input" id="login-password" placeholder="Password" required />
+      <span class="show-password" onclick="togglePassword('login-password')">&#128065;</span>
+    </div>
+    <span class="error" id="login-password-error"></span>
+
+    <!-- Checkbox for human verification -->
+    <div>
+        <input type="checkbox" id="human-verification-checkbox" /> </br>
+        <label for="human-verification-checkbox">Verify I am human</label>
+    </div>   </br>
+
+    <button class="form-button" id="login-submit-button" disabled>Submit</button>
+</div>
+
+<!-- CAPTCHA container -->
+<div class="captcha-container" id="captcha-container" style="display: none;">
+    <div class="captcha-title">Select the images of cats:</div>
+    <div class="image-border">
+        <div class="image-grid">
+            <img src="clothing/images/cat1.jpg" alt="Cat 1" class="captcha-image" data-valid="true">
+            <img src="clothing/images/pexels-samerdaboul-1216482.jpg" alt="Dog 4" class="captcha-image" data-valid="false">
+            <img src="clothing/images/dog1.jpg" alt="Dog 1" class="captcha-image" data-valid="false">
+            <img src="clothing/images/cat3.jpg" alt="Cat 3" class="captcha-image" data-valid="true">
+            <img src="clothing/images/pexels-crisdip-35358-128756.jpg" alt="Dog 2" class="captcha-image" data-valid="false">
+            <img src="clothing/images/pexels-pixabay-37833.jpg" alt="Dog 4" class="captcha-image" data-valid="false">
+            <img src="clothing/images/cat2.jpg" alt="Cat 5" class="captcha-image" data-valid="true">
+            <img src="clothing/images/pexels-pixabay-47547.jpg" alt="Dog 4" class="captcha-image" data-valid="false">
+            <img src="clothing/images/cat4.jpg" alt="Cat 6" class="captcha-image" data-valid="true">
+        </div>
+    </div>
+
+    <button class="captcha-button" id="captcha-submit-button">Verify</button>
+    <div id="captcha-error" class="error"></div>
+</div>
+
+<script>
+  
+    // Show CAPTCHA on human verification checkbox click
+    const humanVerificationCheckbox = document.getElementById("human-verification-checkbox");
+    const captchaContainer = document.getElementById("captcha-container");
+    const loginSubmitButton = document.getElementById("login-submit-button");
+
+    humanVerificationCheckbox.addEventListener("change", function() {
+      if (humanVerificationCheckbox.checked) {
+        captchaContainer.style.display = "block";
+      } else {
+        captchaContainer.style.display = "none";
+      }
+    });
+
+    // CAPTCHA verification
+    const captchaSubmitButton = document.getElementById("captcha-submit-button");
+    const images = document.querySelectorAll('.captcha-image');
+    const errorDiv = document.getElementById('captcha-error');
+
+    let selectedImages = [];
+
+    // Toggle image selection
+    images.forEach(image => {
+        image.addEventListener('click', () => {
+            image.classList.toggle('selected');
+            const isSelected = selectedImages.includes(image.src);
+            if (isSelected) {
+                selectedImages = selectedImages.filter(src => src !== image.src);
+            } else {
+                selectedImages.push(image.src);
+            }
+        });
+    });
+
+    // Validate selection when CAPTCHA submit is clicked
+    captchaSubmitButton.addEventListener('click', () => {
+        errorDiv.textContent = ''; // Clear previous errors
+
+        // Check if selected images match the valid ones
+        const validImages = Array.from(images).filter(img => img.dataset.valid === 'true').map(img => img.src);
+        const isValid = selectedImages.length === validImages.length && selectedImages.every(src => validImages.includes(src));
+
+        if (isValid) {
+            // Enable login button and display success
+            loginSubmitButton.disabled = false;
+            captchaContainer.style.display = "none";
+            alert("Verification successful. You can now proceed to login.");
+        } else {
+            errorDiv.textContent = 'Please select all the images of cats.';
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="form-container" id="signup-form-container">
+    <img src="clothing/images/closebutton.png" alt="Close" id="signup-close-button" class="close-button" />
+    <div class="form-title">Sign Up</div>
+
+
+    <span class="error" id="full-name-error"></span>
+    <input type="text" class="form-input" id="full-name" placeholder="Full Name" required />
+
+
+    <span class="error" id="signup-username-error"></span>
+    <input type="text" class="form-input" id="signup-username" placeholder="Username" required />
+
+
+    <span class="error" id="signup-password-error"></span>
+    <div style="position: relative;">
+        <input type="password" class="form-input" id="signup-password" placeholder="Password" required />
+        <span class="show-password" onclick="togglePassword('signup-password')">&#128065;</span>
+    </div>
+
+
+
+    <span class="error" id="signup-id-error"></span>
+    <input type="text" class="form-input" id="signup-id" placeholder="ID Number" required />
+
+<!-- Terms and Conditions Section -->
+<div class="terms-section">
+  <input type="checkbox" id="terms-checkbox" required />
+  <label for="terms-checkbox">
+    I agree to the <a href="clothing/about.html" style="color: deepskyblue;">terms and conditions</a>.
+  </label>
+  <span class="error" id="terms-error"></span>
+</div> <br>
+
+<button class="form-button" id="signup-submit-button">Sign Up</button>
+
+<script>
+  document.querySelector('.terms-section a').addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent default link behavior
+      window.location.href = 'clothing/about.html'; // Redirect to the about page
+  });
+</script>
+
+
+    
+
+  <script>
+    // Show Login Form
+    const loginButton = document.getElementById("login-button");
+    const loginFormContainer = document.getElementById("login-form-container");
+    const signupFormContainer = document.getElementById("signup-form-container");
+
+    loginButton.addEventListener("click", () => {
+      loginFormContainer.style.display = "block";
+      document.body.classList.add("blurred");
+    });
+
+    // Show Sign Up Form
+    const signupButton = document.getElementById("signup-button");
+    signupButton.addEventListener("click", () => {
+      signupFormContainer.style.display = "block";
+      document.body.classList.add("blurred");
+    });
+
+    // Close Forms
+    const loginCloseButton = document.getElementById("login-close-button");
+    loginCloseButton.addEventListener("click", () => {
+      loginFormContainer.style.display = "none";
+      document.body.classList.remove("blurred");
+    });
+
+    const signupCloseButton = document.getElementById("signup-close-button");
+    signupCloseButton.addEventListener("click", () => {
+      signupFormContainer.style.display = "none";
+      document.body.classList.remove("blurred");
+    });
+
+    // Toggle Password Visibility
+    function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      input.type = input.type === "password" ? "text" : "password";
+    }
+
+    // Validate and Submit Signup Form
+    const signupSubmitButton = document.getElementById("signup-submit-button");
+
+    signupSubmitButton.addEventListener("click", () => {
+    const fullName = document.getElementById("full-name").value;
+    const signupUsername = document.getElementById("signup-username").value;
+    const signupPassword = document.getElementById("signup-password").value;
+    const signupId = document.getElementById("signup-id").value;
+    const termsCheckbox = document.getElementById("terms-checkbox").checked; // Get checkbox state
+    let isValid = true;
+
+    // Validate Full Name
+    if (fullName === "") {
+        document.getElementById("full-name-error").textContent = "Full Name is required";
+        isValid = false;
+    } else {
+        document.getElementById("full-name-error").textContent = "";
+    }
+
+    // Validate Username
+    if (signupUsername === "") {
+        document.getElementById("signup-username-error").textContent = "Username is required";
+        isValid = false;
+    } else {
+        document.getElementById("signup-username-error").textContent = "";
+    }
+
+    // Validate Password
+    if (signupPassword === "") {
+        document.getElementById("signup-password-error").textContent = "Password is required";
+        isValid = false;
+    } else {
+        document.getElementById("signup-password-error").textContent = "";
+    }
+
+    // Validate ID Number
+    if (signupId === "") {
+        document.getElementById("signup-id-error").textContent = "ID Number is required";
+        isValid = false;
+    } else {
+        document.getElementById("signup-id-error").textContent = "";
+    }
+
+    // Validate Terms Checkbox
+    if (!termsCheckbox) {
+        document.getElementById("terms-error").textContent = "You must agree to the terms and conditions";
+        isValid = false;
+    } else {
+        document.getElementById("terms-error").textContent = "";
+    }
+
+    if (isValid) {
+        // Generate PDF
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text(`Full Name: ${fullName}`, 10, 10);
+        doc.text(`Username: ${signupUsername}`, 10, 20);
+        doc.text(`Password: ${signupPassword}`, 10, 30);
+        doc.text(`ID Number: ${signupId}`, 10, 40);
+        doc.save("signup_details.pdf");
+
+        alert("Signup details submitted!");
+
+        // Redirect to clothing/index.html after successful signup
+        window.location.href = "clothing/index.html";
+
+        signupFormContainer.style.display = "none";
+        document.body.classList.remove("blurred");
+    }
+});
+
+  </script>
+</body>
+</html>
